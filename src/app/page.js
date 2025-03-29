@@ -5,12 +5,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styles from './page.module.css';
 
-// Meta data for SEO
-export const metadata = {
-  title: 'Animal Explorer - Learn About Animals in a Fun Way!',
-  description: 'Explore the animal kingdom with Animal Explorer! A fun, interactive app for kids to learn about animals through facts, quizzes, and a 3D zoo simulator where they can walk around and pet animals.',
-};
-
 export default function HomePage() {
   const [activeAnimal, setActiveAnimal] = useState(0);
   const [showWelcome, setShowWelcome] = useState(true);
