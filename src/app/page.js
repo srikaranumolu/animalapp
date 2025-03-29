@@ -27,7 +27,7 @@ export default function HomePage() {
       name: 'Elephant',
       emoji: '🐘',
       color: '#118AB2',
-      fact: 'Elephants can recognize themselves in mirrors!',
+      fact: 'Some elephants can recognize themselves in mirrors!',
       difficulty: 'Easy',
       habitat: 'Forest & Savanna',
       sound: 'TRUMPET!',
