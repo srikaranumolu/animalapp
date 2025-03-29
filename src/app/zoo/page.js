@@ -8,6 +8,12 @@ import Link from 'next/link';
 import styles from './zoo.module.css';
 import * as THREE from 'three';
 
+// Meta data for SEO
+export const metadata = {
+  title: '3D Zoo Simulator - Animal Explorer',
+  description: 'Experience our interactive 3D Zoo! Walk around in first-person view, pet animals, and learn fun facts about lions, elephants, penguins, giraffes, and frogs in this immersive virtual zoo environment.',
+};
+
 // Navigation component
 const Navigation = () => (
   <nav className={styles.zooNav}>

@@ -1,115 +1,119 @@
-# Next.js App with Firebase Authentication
+# Animal Explorer 🦁🐘🐧
 
-This is a Next.js application with Firebase Authentication integration.
+An interactive educational app for kids to learn about animals through fun facts, quizzes, and an immersive 3D zoo experience.
 
-## Getting Started
+## 🌟 Project Overview
 
-1. Clone the repository
-2. Install dependencies
-```bash
+Animal Explorer is designed to spark children's curiosity about wildlife through engaging, interactive experiences. The app features colorful animal profiles, educational content, and a unique 3D zoo simulator where kids can virtually walk around and interact with animals.
+
+## 🎮 Features
+
+### Home Page
+- Featured animal carousel with fun facts
+- Colorful, kid-friendly interface
+- Welcome animation with animal parade
+
+### Learning Modes
+- **Explore Mode**: Discover animals and their habitats
+- **Quiz Challenge**: Test knowledge with fun animal quizzes
+- **Collection**: Track animals you've learned about
+- **3D Zoo**: Walk around and pet virtual animals in first-person view
+
+### Animal Categories
+- Mammals, Birds, Reptiles, Fish, Insects, Amphibians
+- Each category features unique animals with educational content
+
+### Daily Challenges
+- Daily mystery animal to identify
+- New challenges to keep learning fresh and exciting
+
+## 🦒 3D Zoo Simulator
+
+The flagship feature of Animal Explorer is the interactive 3D Zoo where kids can:
+
+- **Explore in First Person**: Walk around a 3D environment using WASD or arrow keys
+- **Interact with Animals**: Find and pet animals throughout the zoo
+- **Learn While Playing**: Discover animal facts through interactive gameplay
+- **Immersive Experience**: Complete with day/night cycle and realistic movement
+
+### Zoo Controls
+- **Movement**: WASD or Arrow Keys
+- **Look Around**: Mouse movement
+- **Jump**: Spacebar
+- **Pet Animals**: Left-click when near an animal
+
+## 🛠️ Technologies Used
+
+- **Frontend**: Next.js, React
+- **3D Rendering**: Three.js with React Three Fiber
+- **Physics**: Cannon.js with React Three Cannon
+- **Styling**: CSS Modules
+- **Graphics**: SVG animal illustrations
+
+## 📋 Installation
+
+1. Clone the repository:
+```
+git clone https://github.com/yourusername/animalapp.git
+cd animalapp
+```
+
+2. Install dependencies:
+```
 npm install
 ```
-3. Set up your Firebase project and authentication
-4. Create a `.env.local` file with your Firebase configuration
-5. Run the development server
-```bash
+
+3. Run the development server:
+```
 npm run dev
 ```
 
-## Firebase Authentication Setup
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-### 1. Create a Firebase Project
+## 🚀 How to Use
 
-1. Go to the [Firebase Console](https://console.firebase.google.com/)
-2. Click "Add project" and follow the setup steps
-3. Once your project is created, click on the web icon (</>) to add a web app
-4. Register your app with a nickname
-5. Copy the Firebase configuration values for the next step
+1. On the homepage, explore featured animals and read fun facts
+2. Navigate to one of the four learning modes (Explore, Quiz, Collection, or 3D Zoo)
+3. For the 3D Zoo:
+   - Click "Start Exploring" to begin
+   - Use WASD/arrow keys to move around
+   - Look around with your mouse
+   - Click on animals to pet them
+   - Follow on-screen prompts to discover all animals
 
-### 2. Configure Environment Variables
-
-Create a `.env.local` file in the root of your project with the following variables:
+## 🧩 Project Structure
 
 ```
-NEXT_PUBLIC_FIREBASE_API_KEY=your-api-key
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-project-id.firebaseapp.com
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-project-id
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your-project-id.appspot.com
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your-messaging-sender-id
-NEXT_PUBLIC_FIREBASE_APP_ID=your-app-id
+/animalapp
+  ├── public/            # Static assets
+  │   ├── animals/       # Animal SVG illustrations
+  │   │   └── *.svg      # Individual animal SVGs
+  │   └── zoo/           # 3D zoo assets
+  ├── src/
+  │   ├── app/           # Next.js app directory
+  │   │   ├── zoo/       # 3D Zoo simulator
+  │   │   │   ├── page.js       # Main zoo component
+  │   │   │   └── zoo.module.css # Zoo styles
+  │   │   ├── page.js    # Home page
+  │   │   └── page.module.css # Home page styles
+  │   └── components/    # Reusable components
+  ├── package.json       # Dependencies
+  └── README.md          # This file
 ```
 
-Replace the placeholder values with your actual Firebase configuration.
+## 🔮 Future Improvements
 
-### 3. Enable Authentication Methods
+- More detailed animal models in the 3D zoo
+- Animal animations and behaviors
+- Sound effects and animal sounds
+- Achievements and badges for discoveries
+- Guided educational tours in the zoo
+- More interactive elements and mini-games
 
-1. In the Firebase console, go to Authentication > Sign-in method
-2. Enable the authentication methods you want to use:
-   - Email/Password
-   - Google
-   - (Others as needed)
+## 📝 About
 
-### 4. Configure Google Authentication
+Animal Explorer was created to make learning about wildlife fun and engaging for young explorers. The combination of educational content with interactive experiences helps children develop a love for animals and nature.
 
-For Google authentication to work properly:
+## 📜 License
 
-1. In the Firebase console, go to Authentication > Sign-in method
-2. Edit the Google provider
-3. Make sure your support email is set correctly
-4. Add your domain (for production) to the "Authorized domains" list
-
-### Troubleshooting Common Issues
-
-#### "Firebase: Error (auth/internal-error)"
-
-This error can occur for several reasons:
-
-1. **Missing or incorrect environment variables**: Double-check that all Firebase config values are correctly set in your `.env.local` file
-2. **Google authentication not properly configured**: Make sure you've completed all steps in the "Configure Google Authentication" section
-3. **Popup blockers**: Some browsers block popups by default. Ensure popups are allowed for your site
-4. **Cross-Origin issues**: For local development, make sure you're using the correct port that's registered with Firebase
-
-#### "Firebase: Error (auth/unauthorized-domain)"
-
-This occurs when your domain isn't authorized for Firebase authentication:
-
-1. In Firebase console, go to Authentication > Sign-in method
-2. Scroll down to "Authorized domains"
-3. Add your domain (e.g., `localhost`, your production domain)
-
-## Authentication Features
-
-This app includes:
-
-- Email/password login and registration
-- Google authentication
-- Password reset functionality
-- Error handling with user-friendly messages
-
-## Project Structure
-
-- `/src/app/firebase/` - Firebase configuration and authentication functions
-- `/src/app/context/` - React context for authentication state management
-- `/src/app/login/` - Login page
-- `/src/app/signup/` - Signup page
-
-## Built With
-
-- Next.js
-- Firebase Authentication
-- React Context API
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT License
