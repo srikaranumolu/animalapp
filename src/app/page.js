@@ -130,7 +130,7 @@ export default function HomePage() {
           <h1>
             Explore the <span className={styles.highlight}>Animal</span> Kingdom!
           </h1>
-          <p className={styles.explorerText}>Join thousands of young explorers learning about amazing animals</p>
+          <p className={styles.explorerText} style={{ color: '#FFFFFF' }}>Join thousands of young explorers learning about amazing animals</p>
           
           <div className={styles.heroCallToAction}>
             <Link href="/explore" className={styles.exploreButton}>
@@ -161,7 +161,7 @@ export default function HomePage() {
           </div>s
           <div className={styles.subHeader}>
             <span className={styles.factLabel}>Fun Fact:</span>
-            <p className={styles.factText}>{animals[activeAnimal].fact}</p>
+            <p className={styles.factText} style={{ color: '#4caf50' }}>{animals[activeAnimal].fact}</p>
           </div>
           <div className={styles.animalDots}>
             {animals.map((animal, index) => (
