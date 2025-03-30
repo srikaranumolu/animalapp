@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import styles from '../page.module.css';
@@ -8,13 +8,20 @@ import Image from 'next/image';
 import { useAuth } from '../context/AuthContext';
 
 export default function Login() {
-  const [email, setEmail] = useState('');
+  const [emailOrUsername, setEmailOrUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { login, loginWithGoogle, forgotPassword } = useAuth();
+  const { login, loginWithGoogle, forgotPassword, user } = useAuth();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user) {
+      router.push('/dashboard');
+    }
+  }, [user, router]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,7 +31,7 @@ export default function Login() {
     setLoading(true);
     
     try {
-      const result = await login(email, password);
+      const result = await login(emailOrUsername, password);
       
       if (result.error) {
         setError(result.error);
@@ -35,7 +42,7 @@ export default function Login() {
       // Successfully logged in
       setSuccess('Login successful! Redirecting...');
       setTimeout(() => {
-        router.push('/');
+        router.push('/dashboard');
       }, 1500);
     } catch (err) {
       setError('Login failed. Please try again later.');
@@ -83,7 +90,7 @@ export default function Login() {
       // Successfully signed in with Google
       setSuccess('Login successful! Redirecting...');
       setTimeout(() => {
-        router.push('/');
+        router.push('/dashboard');
       }, 1500);
     } catch (err) {
       setError('Google sign in failed. Please try again later.');
@@ -96,14 +103,14 @@ export default function Login() {
     setError('');
     setSuccess('');
     
-    if (!email) {
-      setError('Please enter your email address to reset password');
+    if (!emailOrUsername) {
+      setError('Please enter your username or email address to reset password');
       return;
     }
     
     setLoading(true);
     try {
-      const result = await forgotPassword(email);
+      const result = await forgotPassword(emailOrUsername);
       
       if (result.error) {
         setError(result.error);
@@ -120,31 +127,33 @@ export default function Login() {
   return (
     <div className={styles.authPage}>
       <div className={styles.authCard}>
-        <Image
-          src="/auth-logo.svg"
-          alt="Login"
-          width={80}
-          height={80}
-          className={styles.authLogo}
-          priority
-        />
-        <h1 className={styles.authTitle}>Welcome Back</h1>
+        <Link href="/">
+          <Image
+            src="/auth-logo.svg"
+            alt="Login"
+            width={80}
+            height={80}
+            className={styles.authLogo}
+            priority
+          />
+        </Link>
+        <h1 className={styles.authTitle}>Welcome Back, Explorer!</h1>
         
         {error && <div className={styles.errorMessage}>{error}</div>}
         {success && <div className={styles.successMessage}>{success}</div>}
         
         <form onSubmit={handleSubmit} className={styles.authForm}>
           <div className={styles.formGroup}>
-            <label htmlFor="email">Email Address</label>
+            <label htmlFor="emailOrUsername">Username or Email</label>
             <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              id="emailOrUsername"
+              type="text"
+              value={emailOrUsername}
+              onChange={(e) => setEmailOrUsername(e.target.value)}
               required
               className={styles.input}
               disabled={loading}
-              placeholder="your@email.com"
+              placeholder="explorer123 or your@email.com"
             />
           </div>
           
@@ -175,7 +184,7 @@ export default function Login() {
             className={styles.primary}
             disabled={loading}
           >
-            {loading ? 'Logging in...' : 'Login'}
+            {loading ? 'Logging in...' : 'Start Adventure'}
           </button>
           
           <div className={styles.orDivider}>
@@ -195,14 +204,14 @@ export default function Login() {
               height={20}
               style={{ marginRight: '10px' }}
             />
-            Sign in with Google
+            Continue with Google
           </button>
         </form>
         
         <p className={styles.authFooter}>
-          Don&apos;t have an account?{' '}
+          New to Animal Explorer?{' '}
           <Link href="/signup" className={styles.link}>
-            Sign up
+            Join the Safari
           </Link>
         </p>
       </div>

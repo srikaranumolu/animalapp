@@ -251,8 +251,8 @@ export default function HomePage() {
         <div className={styles.challengeContent}>
           <div className={styles.challengeBadge}>Daily Challenge</div>
           <h2>Mystery Animal of the Day</h2>
-          <p>Can you guess this animal based on the clues?</p>
-          <ul className={styles.clueList}>
+          <p style={{ color: '#000000' }}>Can you guess this animal based on the clues?</p>
+          <ul className={styles.clueList} style={{ color: '#895129' }}>
             <li>I have a very long neck</li>
             <li>I&apos;m the tallest land animal</li>
             <li>I have spotted patterns on my body</li>

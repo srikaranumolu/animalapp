@@ -1,0 +1,56 @@
+<svg width="1440" height="900" viewBox="0 0 1440 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <rect width="1440" height="900" fill="url(#bg-gradient)"/>
+  
+  <!-- Trees -->
+  <path d="M200 700 L180 800 L220 800 Z" fill="#2E7D32" opacity="0.8"/>
+  <path d="M190 730 L170 800 L210 800 Z" fill="#388E3C" opacity="0.7"/>
+  <path d="M210 730 L190 800 L230 800 Z" fill="#388E3C" opacity="0.7"/>
+  <rect x="195" y="800" width="10" height="40" fill="#795548"/>
+  
+  <path d="M1300 650 L1280 750 L1320 750 Z" fill="#2E7D32" opacity="0.8"/>
+  <path d="M1290 680 L1270 750 L1310 750 Z" fill="#388E3C" opacity="0.7"/>
+  <path d="M1310 680 L1290 750 L1330 750 Z" fill="#388E3C" opacity="0.7"/>
+  <rect x="1295" y="750" width="10" height="40" fill="#795548"/>
+  
+  <!-- Stylized Mountains -->
+  <path d="M0 800 L200 500 L400 700 L600 400 L800 600 L1000 450 L1200 600 L1440 350 L1440 900 L0 900 Z" fill="#81C784" opacity="0.3"/>
+  <path d="M0 850 L200 650 L400 750 L600 550 L800 700 L1000 600 L1200 700 L1440 500 L1440 900 L0 900 Z" fill="#4CAF50" opacity="0.3"/>
+  
+  <!-- Clouds -->
+  <circle cx="200" cy="150" r="50" fill="white" opacity="0.7"/>
+  <circle cx="250" cy="150" r="60" fill="white" opacity="0.7"/>
+  <circle cx="300" cy="150" r="40" fill="white" opacity="0.7"/>
+  
+  <circle cx="1100" cy="200" r="40" fill="white" opacity="0.7"/>
+  <circle cx="1150" cy="200" r="60" fill="white" opacity="0.7"/>
+  <circle cx="1200" cy="200" r="50" fill="white" opacity="0.7"/>
+  
+  <!-- Sun -->
+  <circle cx="1000" cy="100" r="60" fill="#FFD54F" opacity="0.8"/>
+  <circle cx="1000" cy="100" r="90" fill="#FFD54F" opacity="0.2"/>
+  
+  <!-- Animal Silhouettes -->
+  <!-- Bird -->
+  <path d="M800 300 Q820 280 840 300 Q860 280 880 300 L880 305 Q860 290 840 305 Q820 290 800 305 Z" fill="#263238" opacity="0.5"/>
+  <path d="M750 330 Q770 310 790 330 Q810 310 830 330 L830 335 Q810 320 790 335 Q770 320 750 335 Z" fill="#263238" opacity="0.5"/>
+  <path d="M900 350 Q920 330 940 350 Q960 330 980 350 L980 355 Q960 340 940 355 Q920 340 900 355 Z" fill="#263238" opacity="0.5"/>
+  
+  <!-- Deer Silhouette -->
+  <path d="M300 500 L300 550 L320 590 L290 590 L290 600 L330 600 L340 590 L340 550 Q350 535 360 550 L360 520 Q370 500 380 520 L380 500 Q370 485 360 500 L340 500 Q335 480 330 500 Z" fill="#5D4037" opacity="0.6"/>
+  
+  <!-- Fox Silhouette -->
+  <path d="M1100 550 L1090 570 L1080 600 L1120 600 L1110 570 L1100 550 Z" fill="#FF5722" opacity="0.6"/>
+  <path d="M1100 550 L1095 540 L1090 550 Z" fill="#FF5722" opacity="0.6"/>
+  <path d="M1100 550 L1105 540 L1110 550 Z" fill="#FF5722" opacity="0.6"/>
+  <path d="M1085 580 L1080 575 L1082 585 Z" fill="#FF5722" opacity="0.6"/>
+  <path d="M1115 580 L1120 575 L1118 585 Z" fill="#FF5722" opacity="0.6"/>
+  
+  <!-- Defs for gradients -->
+  <defs>
+    <linearGradient id="bg-gradient" x1="0" y1="0" x2="0" y2="900" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#E8F5E9"/>
+      <stop offset="1" stop-color="#C8E6C9"/>
+    </linearGradient>
+  </defs>
+</svg> 

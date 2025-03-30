@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import styles from '../page.module.css';
@@ -8,7 +8,7 @@ import { useAuth } from '../context/AuthContext';
 import Image from 'next/image';
 
 export default function Signup() {
-  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -16,7 +16,14 @@ export default function Signup() {
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { register, loginWithGoogle } = useAuth();
+  const { register, loginWithGoogle, user } = useAuth();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user) {
+      router.push('/dashboard');
+    }
+  }, [user, router]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,8 +47,11 @@ export default function Signup() {
     }
     
     try {
+      // Create a valid email using the username
+      const emailToUse = email || `${username}@animalexplorer.com`;
+      
       // Register with email and password
-      const result = await register(email, password);
+      const result = await register(emailToUse, password, username);
       
       if (result.error) {
         setError(result.error);
@@ -100,7 +110,7 @@ export default function Signup() {
       // Successfully signed in with Google
       setSuccess('Account created successfully! Redirecting...');
       setTimeout(() => {
-        router.push('/');
+        router.push('/dashboard');
       }, 1500);
     } catch (err) {
       setError('Google sign in failed. Please try again later.');
@@ -111,31 +121,33 @@ export default function Signup() {
   return (
     <div className={styles.authPage}>
       <div className={styles.authCard}>
-        <Image
-          src="/auth-logo.svg"
-          alt="Sign Up"
-          width={80}
-          height={80}
-          className={styles.authLogo}
-          priority
-        />
-        <h1 className={styles.authTitle}>Create Account</h1>
+        <Link href="/">
+          <Image
+            src="/auth-logo.svg"
+            alt="Sign Up"
+            width={80}
+            height={80}
+            className={styles.authLogo}
+            priority
+          />
+        </Link>
+        <h1 className={styles.authTitle}>Join Our Wild Adventure</h1>
         
         {error && <div className={styles.errorMessage}>{error}</div>}
         {success && <div className={styles.successMessage}>{success}</div>}
         
         <form onSubmit={handleSubmit} className={styles.authForm}>
           <div className={styles.formGroup}>
-            <label htmlFor="name">Full Name</label>
+            <label htmlFor="username">Username</label>
             <input
-              id="name"
+              id="username"
               type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
               className={styles.input}
               disabled={loading}
-              placeholder="John Doe"
+              placeholder="explorer123"
             />
           </div>
           
@@ -189,7 +201,7 @@ export default function Signup() {
             className={styles.primary}
             disabled={loading}
           >
-            {loading ? 'Creating Account...' : 'Sign Up'}
+            {loading ? 'Creating Account...' : 'Begin Your Journey'}
           </button>
           
           <div className={styles.orDivider}>
@@ -209,14 +221,14 @@ export default function Signup() {
               height={20}
               style={{ marginRight: '10px' }}
             />
-            Sign up with Google
+            Continue with Google
           </button>
         </form>
         
         <p className={styles.authFooter}>
-          Already have an account?{" "}
+          Already an explorer?{" "}
           <Link href="/login" className={styles.link}>
-            Login
+            Return to Safari
           </Link>
         </p>
       </div>

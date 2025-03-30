@@ -7,7 +7,8 @@ import {
   signInWithRedirect,
   getRedirectResult,
   onAuthStateChanged,
-  sendPasswordResetEmail
+  sendPasswordResetEmail,
+  updateProfile
 } from 'firebase/auth';
 
 // Format error messages to be more user-friendly
@@ -40,9 +41,17 @@ const formatErrorMessage = (errorCode) => {
 };
 
 // Email/Password Authentication
-export const registerWithEmailAndPassword = async (email, password) => {
+export const registerWithEmailAndPassword = async (email, password, username) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    
+    // Update the user profile with the username as displayName
+    if (username) {
+      await updateProfile(userCredential.user, {
+        displayName: username
+      });
+    }
+    
     return { user: userCredential.user, error: null };
   } catch (error) {
     console.error("Registration error:", error.code, error.message);
@@ -50,10 +59,30 @@ export const registerWithEmailAndPassword = async (email, password) => {
   }
 };
 
-export const loginWithEmailAndPassword = async (email, password) => {
+export const loginWithEmailAndPassword = async (emailOrUsername, password) => {
   try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    return { user: userCredential.user, error: null };
+    // Check if input is an email or username
+    const isEmail = emailOrUsername.includes('@');
+    
+    if (isEmail) {
+      // If it's an email, proceed with normal login
+      const userCredential = await signInWithEmailAndPassword(auth, emailOrUsername, password);
+      return { user: userCredential.user, error: null };
+    } else {
+      // It's a username, need to find the user in Firebase
+      // Since Firebase doesn't support username login directly, we'll use a workaround
+      // In a real app, you would query a database to find the email associated with the username
+      // For this demo, we'll just use the username + "@animalexplorer.com" as email
+      // This is a simplified demo approach - in a real app you'd need a proper database query
+      const email = `${emailOrUsername}@animalexplorer.com`;
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        return { user: userCredential.user, error: null };
+      } catch (usernameLoginError) {
+        console.error("Username login error:", usernameLoginError.code);
+        return { user: null, error: "Invalid username or password. Please try again." };
+      }
+    }
   } catch (error) {
     console.error("Login error:", error.code, error.message);
     return { user: null, error: formatErrorMessage(error.code) };
