@@ -3,192 +3,303 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import styles from './random-facts.module.css';
+import styles from './RandomFacts.module.css';
 import { useAuth } from '../context/AuthContext';
 
 export default function RandomFactsPage() {
-  const [loading, setLoading] = useState(true);
-  const [facts, setFacts] = useState([]);
-  const [randomFact, setRandomFact] = useState(null);
   const { user } = useAuth();
   const router = useRouter();
-  
-  const animalFacts = [
-    {
-      id: 1,
-      animal: 'Elephant',
-      title: 'Memory Masters',
-      fact: 'Elephants have the largest brain of any land animal and an incredible memory. They can remember specific locations for up to 50 years and can recognize over 200 different elephants.',
-      icon: '🐘',
-      color: '#76b5c5'
-    },
-    {
-      id: 2,
-      animal: 'Giraffe',
-      title: 'Heart Pumping',
-      fact: 'Giraffes have the highest blood pressure of any animal. Their hearts can be 2 feet long and weigh up to 25 pounds to pump blood all the way up their long necks.',
-      icon: '🦒',
-      color: '#e6b566'
-    },
-    {
-      id: 3,
-      animal: 'Tiger',
-      title: 'Striped Skin',
-      fact: "Tigers have striped skin, not just striped fur! If you shaved a tiger, you would still see its stripes. Each tiger's stripes are unique, like human fingerprints.",
-      icon: '🐯',
-      color: '#e67e22'
-    },
-    {
-      id: 4,
-      animal: 'Penguin',
-      title: 'High Jumpers',
-      fact: "Penguins can jump as high as 6 feet out of water. They do this to avoid predators like leopard seals when they're surfacing for air.",
-      icon: '🐧',
-      color: '#34495e'
-    },
-    {
-      id: 5,
-      animal: 'Koala',
-      title: 'Sleepy Creatures',
-      fact: 'Koalas sleep up to 20 hours a day! Their diet of eucalyptus leaves provides very little energy, so they conserve energy by sleeping most of the time.',
-      icon: '🐨',
-      color: '#7f8c8d'
-    },
-    {
-      id: 6,
-      animal: 'Cheetah',
-      title: 'Speed Champions',
-      fact: 'Cheetahs can accelerate from 0 to 60 mph in just 3 seconds. Their bodies are specially adapted for speed with flexible spines, oversized hearts, and wide nostrils.',
-      icon: '🐆',
-      color: '#d35400'
-    },
-    {
-      id: 7,
-      animal: 'Octopus',
-      title: 'Intelligent Invertebrates',
-      fact: 'Octopuses have 9 brains - a central brain and 8 mini-brains (one in each arm). They can solve puzzles, use tools, and even escape from aquariums back to the ocean.',
-      icon: '🐙',
-      color: '#8e44ad'
-    },
-    {
-      id: 8,
-      animal: 'Hummingbird',
-      title: 'Heart Rate Records',
-      fact: "A hummingbird's heart beats up to 1,260 times per minute. They also have the highest metabolism of any animal, and must eat more than their own weight in nectar each day.",
-      icon: '🐦',
-      color: '#27ae60'
-    },
-    {
-      id: 9,
-      animal: 'Polar Bear',
-      title: 'Hidden Colors',
-      fact: "Polar bears have black skin underneath their white fur. Their fur isn't actually white—it's transparent and reflects visible light, making it appear white.",
-      icon: '🐻‍❄️',
-      color: '#3498db'
-    },
-    {
-      id: 10,
-      animal: 'Chameleon',
-      title: 'Color Changers',
-      fact: "Chameleons don't change color to match their surroundings. Instead, they change color to regulate temperature, communicate emotions, and attract mates.",
-      icon: '🦎',
-      color: '#2ecc71'
-    },
-    {
-      id: 11,
-      animal: 'Dolphin',
-      title: 'Half-Brain Sleepers',
-      fact: 'Dolphins sleep with only half their brain at a time. The other half stays alert to watch for predators and signal when to surface for air.',
-      icon: '🐬',
-      color: '#3498db'
-    },
-    {
-      id: 12,
-      animal: 'Parrot',
-      title: 'Vocabulary Champions',
-      fact: 'An African grey parrot named Alex was trained to recognize about 100 words, colors, shapes, and could express desires like wanting a certain food or toy.',
-      icon: '🦜',
-      color: '#e74c3c'
+  const [facts, setFacts] = useState([]);
+  const [randomFact, setRandomFact] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [activeCategory, setActiveCategory] = useState('All');
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchAnimalFacts();
+  }, []);
+
+  const fetchAnimalFacts = async () => {
+    try {
+      setLoading(true);
+      // Using the Ninja API for animal facts
+      const response = await fetch('https://api.api-ninjas.com/v1/animals?name=', {
+        headers: { 
+          'X-Api-Key': 'YOUR_API_KEY',
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch animal facts');
+      }
+      
+      const data = await response.json();
+      
+      // Transform the API response into our fact format
+      const processedFacts = data.slice(0, 20).map((animal, index) => {
+        const fact = animal.characteristics?.behavior || 
+                    animal.characteristics?.diet || 
+                    animal.characteristics?.habitat ||
+                    'This animal has unique characteristics that make it special in the animal kingdom.';
+                    
+        return {
+          id: index + 1,
+          animal: animal.name,
+          fact: fact,
+          emoji: getAnimalEmoji(animal.name),
+          category: animal.taxonomy?.class || 'Unknown'
+        };
+      });
+      
+      setFacts(processedFacts);
+      generateRandomFact(processedFacts);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching animal facts:', error);
+      setError('Failed to load animal facts. Using backup data instead.');
+      // Use backup data in case the API fails
+      useBackupData();
     }
-  ];
-  
-  // Generate a random fact
-  const generateRandomFact = () => {
-    const randomIndex = Math.floor(Math.random() * animalFacts.length);
-    setRandomFact(animalFacts[randomIndex]);
   };
   
-  // Initialize
-  useEffect(() => {
-    // Protect this route - redirect if not logged in
-    if (!user) {
-      router.push('/login');
-    } else {
-      setFacts(animalFacts);
-      generateRandomFact();
-      setLoading(false);
+  const useBackupData = () => {
+    // Backup animal facts data
+    const backupFacts = [
+      {
+        id: 1,
+        animal: 'Lion',
+        fact: 'A lion\'s roar can be heard up to 5 miles away and is used to communicate with other pride members.',
+        emoji: '🦁',
+        category: 'Mammals'
+      },
+      {
+        id: 2,
+        animal: 'Elephant',
+        fact: 'Elephants can recognize themselves in mirrors, showing self-awareness that few animals possess.',
+        emoji: '🐘',
+        category: 'Mammals'
+      },
+      {
+        id: 3,
+        animal: 'Octopus',
+        fact: 'Octopuses have three hearts: two pump blood through the gills, while the third pumps it through the body.',
+        emoji: '🐙',
+        category: 'Marine'
+      },
+      {
+        id: 4,
+        animal: 'Penguin',
+        fact: 'Emperor penguins can dive up to 1,850 feet deep, holding their breath for up to 20 minutes.',
+        emoji: '🐧',
+        category: 'Birds'
+      },
+      {
+        id: 5,
+        animal: 'Chameleon',
+        fact: 'Chameleons don\'t change color primarily for camouflage, but to regulate body temperature and communicate.',
+        emoji: '🦎',
+        category: 'Reptiles'
+      },
+      {
+        id: 6,
+        animal: 'Hummingbird',
+        fact: 'Some hummingbirds can flap their wings up to 80 times per second and are the only birds that can fly backwards.',
+        emoji: '🐦',
+        category: 'Birds'
+      },
+      {
+        id: 7,
+        animal: 'Giraffe',
+        fact: 'A giraffe\'s spots are like human fingerprints – no two giraffes have exactly the same pattern.',
+        emoji: '🦒',
+        category: 'Mammals'
+      },
+      {
+        id: 8,
+        animal: 'Koala',
+        fact: 'Koalas sleep up to 22 hours a day because their eucalyptus diet requires a lot of energy to digest.',
+        emoji: '🐨',
+        category: 'Mammals'
+      },
+      {
+        id: 9,
+        animal: 'Whale',
+        fact: 'The blue whale is the loudest animal on Earth, with vocalizations that can be heard up to 500 miles away.',
+        emoji: '🐋',
+        category: 'Marine'
+      },
+      {
+        id: 10,
+        animal: 'Dolphin',
+        fact: 'Dolphins sleep with one half of their brain at a time, allowing them to continue breathing and stay alert.',
+        emoji: '🐬',
+        category: 'Marine'
+      },
+      {
+        id: 11,
+        animal: 'Cheetah',
+        fact: 'Cheetahs can accelerate from 0 to 60 mph in just three seconds – faster than most sports cars.',
+        emoji: '🐆',
+        category: 'Mammals'
+      },
+      {
+        id: 12,
+        animal: 'Owl',
+        fact: 'Owls can rotate their necks up to 270 degrees without damaging blood vessels or cutting off blood supply.',
+        emoji: '🦉',
+        category: 'Birds'
+      }
+    ];
+    
+    setFacts(backupFacts);
+    generateRandomFact(backupFacts);
+    setLoading(false);
+  };
+
+  const getAnimalEmoji = (animalName) => {
+    const emojiMap = {
+      'lion': '🦁',
+      'elephant': '🐘',
+      'tiger': '🐯',
+      'bear': '🐻',
+      'fox': '🦊',
+      'wolf': '🐺',
+      'deer': '🦌',
+      'giraffe': '🦒',
+      'zebra': '🦓',
+      'monkey': '🐒',
+      'gorilla': '🦍',
+      'panda': '🐼',
+      'koala': '🐨',
+      'penguin': '🐧',
+      'bird': '🐦',
+      'owl': '🦉',
+      'butterfly': '🦋',
+      'bee': '🐝',
+      'snake': '🐍',
+      'turtle': '🐢',
+      'crocodile': '🐊',
+      'whale': '🐋',
+      'dolphin': '🐬',
+      'fish': '🐠',
+      'octopus': '🐙',
+      'crab': '🦀',
+      'shark': '🦈',
+      'frog': '🐸',
+      'rabbit': '🐇',
+      'mouse': '🐁',
+      'cat': '🐱',
+      'dog': '🐶'
+    };
+    
+    // Check if the animal name is in the map or contains any of the keys
+    const lowerName = animalName.toLowerCase();
+    for (const [key, emoji] of Object.entries(emojiMap)) {
+      if (lowerName.includes(key)) {
+        return emoji;
+      }
     }
-  }, [user, router]);
-  
+    
+    // Default emoji if no match is found
+    return '🦓';
+  };
+
+  const generateRandomFact = (factArray = facts) => {
+    setIsGenerating(true);
+    setTimeout(() => {
+      const randomIndex = Math.floor(Math.random() * factArray.length);
+      setRandomFact(factArray[randomIndex]);
+      setIsGenerating(false);
+    }, 500); // Add a slight delay for animation effect
+  };
+
+  const filterByCategory = (category) => {
+    setActiveCategory(category);
+    if (category === 'All') {
+      setFacts(facts);
+    } else {
+      const filtered = facts.filter(fact => fact.category === category);
+      setFacts(filtered);
+    }
+  };
+
+  const categories = ['All', ...new Set(facts.map(fact => fact.category))];
+
   if (loading) {
     return (
       <div className={styles.loadingContainer}>
-        <div className={styles.loadingSpinner}></div>
-        <p>Gathering facts from the animal kingdom...</p>
+        <div className={styles.loader}>
+          <div className={styles.pawprint}></div>
+          <div className={styles.pawprint}></div>
+          <div className={styles.pawprint}></div>
+        </div>
+        <p>Loading animal facts...</p>
       </div>
     );
   }
-  
+
   return (
-    <div className={styles.container}>
-      <header className={styles.pageHeader}>
-        <div className={styles.headerContent}>
-          <h1>Animal Facts Explorer</h1>
-          <p>Discover amazing facts about animals from around the world</p>
-        </div>
-        <Link href="/dashboard" className={styles.backButton}>
-          Back to Dashboard
-        </Link>
-      </header>
+    <div className={styles.randomFactsContainer}>
+      <div className={styles.backButton}>
+        {user ? (
+          <Link href="/dashboard">Back to Dashboard</Link>
+        ) : (
+          <Link href="/">Back to Home</Link>
+        )}
+      </div>
       
-      <section className={styles.randomFactSection}>
-        <h2>Random Fact Generator</h2>
-        <div className={styles.factCard} style={{borderColor: randomFact?.color}}>
-          <div className={styles.factCardIcon} style={{backgroundColor: randomFact?.color}}>
-            <span>{randomFact?.icon}</span>
-          </div>
-          <div className={styles.factCardContent}>
-            <div className={styles.factAnimal}>{randomFact?.animal}</div>
-            <h3>{randomFact?.title}</h3>
-            <p>{randomFact?.fact}</p>
-          </div>
+      <h1 className={styles.pageTitle}>Random Animal Facts</h1>
+      
+      {error && <div className={styles.errorNotice}>{error}</div>}
+      
+      <div className={styles.randomFactGenerator}>
+        <div className={`${styles.factCard} ${isGenerating ? styles.generating : ''}`}>
+          {randomFact && (
+            <>
+              <div className={styles.factHeader}>
+                <span className={styles.factEmoji}>{randomFact.emoji}</span>
+                <h2>{randomFact.animal}</h2>
+                <span className={styles.factCategory}>{randomFact.category}</span>
+              </div>
+              <p className={styles.factText}>{randomFact.fact}</p>
+            </>
+          )}
         </div>
         <button 
-          className={styles.generateButton}
-          onClick={generateRandomFact}
+          className={styles.generateButton} 
+          onClick={() => generateRandomFact()}
+          disabled={isGenerating}
         >
-          Generate New Fact
+          {isGenerating ? 'Generating...' : 'Generate New Fact'}
         </button>
-      </section>
+      </div>
       
-      <section className={styles.allFactsSection}>
-        <h2>All Animal Facts</h2>
-        <div className={styles.factGrid}>
-          {facts.map(fact => (
-            <div 
-              key={fact.id} 
-              className={styles.factGridItem}
-              style={{borderColor: fact.color}}
-            >
-              <div className={styles.factGridIcon} style={{backgroundColor: fact.color}}>
-                {fact.icon}
-              </div>
+      <div className={styles.factCategories}>
+        {categories.map(category => (
+          <button 
+            key={category}
+            className={`${styles.categoryButton} ${activeCategory === category ? styles.activeCategory : ''}`}
+            onClick={() => filterByCategory(category)}
+          >
+            {category}
+          </button>
+        ))}
+      </div>
+      
+      <div className={styles.allFactsGrid}>
+        {facts.map(fact => (
+          <div key={fact.id} className={styles.factItem}>
+            <div className={styles.factItemHeader}>
+              <span className={styles.factItemEmoji}>{fact.emoji}</span>
               <h3>{fact.animal}</h3>
-              <p>{fact.fact}</p>
             </div>
-          ))}
-        </div>
-      </section>
+            <p>{fact.fact}</p>
+            <span className={styles.factItemCategory}>{fact.category}</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 } 

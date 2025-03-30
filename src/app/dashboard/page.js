@@ -66,7 +66,7 @@ export default function Dashboard() {
       <header className={styles.welcomeHeader}>
         <div className={styles.headerContent}>
           <div className={styles.welcomeAnimal}>🦁</div>
-          <h1>Welcome to your Safari, <span className={styles.userName}>{userData?.name}</span>!</h1>
+          <h1>Welcome to your Safari, {userData?.name}!</h1>
           <p>Continue your animal adventure today</p>
           <div className={styles.animalTip}>
             <span className={styles.tipIcon}>💡</span>

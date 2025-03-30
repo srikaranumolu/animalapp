@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import styles from './dashboard.module.css';
+import styles from './DashboardLayout.module.css';
 
 export default function DashboardNavigation() {
   const router = useRouter();

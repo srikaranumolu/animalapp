@@ -1,28 +1,83 @@
-<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+<svg width="500" height="500" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <pattern id="animalPattern" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse">
-      <!-- Paw Print -->
-      <path d="M30,40 C33,35 38,35 40,40 C42,45 37,50 35,45 C33,50 28,45 30,40 Z" fill="#4CAF50" opacity="0.2"/>
-      <circle cx="35" cy="50" r="3" fill="#4CAF50" opacity="0.2"/>
+    <pattern id="animal-pattern" patternUnits="userSpaceOnUse" width="500" height="500">
+      <!-- Paw prints -->
+      <g opacity="0.03">
+        <circle cx="50" cy="50" r="5" fill="#333"/>
+        <circle cx="65" cy="60" r="5" fill="#333"/>
+        <circle cx="80" cy="50" r="5" fill="#333"/>
+        <ellipse cx="65" cy="35" rx="8" ry="6" fill="#333"/>
+      </g>
       
-      <!-- Leaf -->
-      <path d="M80,30 Q100,10 120,30 Q100,60 80,30 Z" fill="#81C784" opacity="0.2"/>
-      <path d="M85,30 L115,30" stroke="#81C784" stroke-width="1" opacity="0.2"/>
+      <g opacity="0.03">
+        <circle cx="250" cy="150" r="5" fill="#333"/>
+        <circle cx="265" cy="160" r="5" fill="#333"/>
+        <circle cx="280" cy="150" r="5" fill="#333"/>
+        <ellipse cx="265" cy="135" rx="8" ry="6" fill="#333"/>
+      </g>
       
-      <!-- Elephant -->
-      <path d="M160,40 C170,30 180,35 175,45 C190,40 185,55 175,55 C165,55 155,50 160,40 Z" fill="#4CAF50" opacity="0.2"/>
-      <circle cx="172" cy="45" r="2" fill="#333333" opacity="0.2"/>
+      <g opacity="0.03">
+        <circle cx="150" cy="350" r="5" fill="#333"/>
+        <circle cx="165" cy="360" r="5" fill="#333"/>
+        <circle cx="180" cy="350" r="5" fill="#333"/>
+        <ellipse cx="165" cy="335" rx="8" ry="6" fill="#333"/>
+      </g>
       
-      <!-- Bird -->
-      <path d="M60,120 L75,100 L90,120 M75,100 L75,130" stroke="#4CAF50" stroke-width="2" opacity="0.2"/>
+      <g opacity="0.03">
+        <circle cx="400" cy="450" r="5" fill="#333"/>
+        <circle cx="415" cy="460" r="5" fill="#333"/>
+        <circle cx="430" cy="450" r="5" fill="#333"/>
+        <ellipse cx="415" cy="435" rx="8" ry="6" fill="#333"/>
+      </g>
       
-      <!-- Snake -->
-      <path d="M130,120 C140,110 150,115 160,105 C170,95 160,85 150,90 C140,95 130,90 120,100" stroke="#4CAF50" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.2"/>
+      <!-- Simple animal silhouettes -->
+      <path d="M120,120 C130,110 145,110 155,120 C165,110 180,110 190,120 C195,130 195,145 190,155 C180,165 170,165 155,155 C140,165 130,165 120,155 C115,145 115,130 120,120" fill="#333" opacity="0.025"/>
       
-      <!-- Butterfly -->
-      <path d="M30,150 C40,140 50,145 40,160 C50,175 40,180 30,170 C20,180 10,175 20,160 C10,145 20,140 30,150 Z" fill="#4CAF50" opacity="0.2"/>
-      <path d="M30,150 L30,170" stroke="#4CAF50" stroke-width="1" opacity="0.2"/>
+      <path d="M350,280 C360,270 375,270 385,280 C395,270 410,270 420,280 C425,290 425,305 420,315 C410,325 400,325 385,315 C370,325 360,325 350,315 C345,305 345,290 350,280" fill="#333" opacity="0.025"/>
+      
+      <path d="M220,400 C230,390 245,390 255,400 C265,390 280,390 290,400 C295,410 295,425 290,435 C280,445 270,445 255,435 C240,445 230,445 220,435 C215,425 215,410 220,400" fill="#333" opacity="0.025"/>
+      
+      <!-- Bird silhouettes -->
+      <path d="M80,200 C90,190 100,195 110,185 C115,180 120,185 115,190 C105,200 90,205 80,200" fill="#333" opacity="0.03"/>
+      <path d="M320,100 C330,90 340,95 350,85 C355,80 360,85 355,90 C345,100 330,105 320,100" fill="#333" opacity="0.03"/>
+      <path d="M420,350 C430,340 440,345 450,335 C455,330 460,335 455,340 C445,350 430,355 420,350" fill="#333" opacity="0.03"/>
+      
+      <!-- Fish silhouettes -->
+      <path d="M200,250 C210,245 220,245 230,250 L235,240 L235,260 L230,250 C220,255 210,255 200,250 Z" fill="#333" opacity="0.03"/>
+      <path d="M100,400 C110,395 120,395 130,400 L135,390 L135,410 L130,400 C120,405 110,405 100,400 Z" fill="#333" opacity="0.03"/>
+      <path d="M400,200 C410,195 420,195 430,200 L435,190 L435,210 L430,200 C420,205 410,205 400,200 Z" fill="#333" opacity="0.03"/>
+      
+      <!-- Additional decorative elements -->
+      <circle cx="50" cy="300" r="10" fill="#333" opacity="0.02"/>
+      <circle cx="300" cy="50" r="10" fill="#333" opacity="0.02"/>
+      <circle cx="450" cy="150" r="10" fill="#333" opacity="0.02"/>
+      <circle cx="150" cy="450" r="10" fill="#333" opacity="0.02"/>
+      
+      <rect x="250" y="250" width="20" height="20" rx="5" fill="#333" opacity="0.02"/>
+      <rect x="100" cy="100" width="15" height="15" rx="3" fill="#333" opacity="0.02"/>
+      <rect x="400" cy="400" width="15" height="15" rx="3" fill="#333" opacity="0.02"/>
+      
+      <!-- Dots grid for texture -->
+      <circle cx="20" cy="20" r="1" fill="#333" opacity="0.02"/>
+      <circle cx="50" cy="20" r="1" fill="#333" opacity="0.02"/>
+      <circle cx="80" cy="20" r="1" fill="#333" opacity="0.02"/>
+      <circle cx="110" cy="20" r="1" fill="#333" opacity="0.02"/>
+      <circle cx="140" cy="20" r="1" fill="#333" opacity="0.02"/>
+      <circle cx="170" cy="20" r="1" fill="#333" opacity="0.02"/>
+      <circle cx="200" cy="20" r="1" fill="#333" opacity="0.02"/>
+      <circle cx="230" cy="20" r="1" fill="#333" opacity="0.02"/>
+      <circle cx="260" cy="20" r="1" fill="#333" opacity="0.02"/>
+      <circle cx="290" cy="20" r="1" fill="#333" opacity="0.02"/>
+      <circle cx="320" cy="20" r="1" fill="#333" opacity="0.02"/>
+      <circle cx="350" cy="20" r="1" fill="#333" opacity="0.02"/>
+      <circle cx="380" cy="20" r="1" fill="#333" opacity="0.02"/>
+      <circle cx="410" cy="20" r="1" fill="#333" opacity="0.02"/>
+      <circle cx="440" cy="20" r="1" fill="#333" opacity="0.02"/>
+      <circle cx="470" cy="20" r="1" fill="#333" opacity="0.02"/>
     </pattern>
   </defs>
-  <rect width="100%" height="100%" fill="url(#animalPattern)"/>
+  
+  <!-- Background rectangle with white background and pattern on top -->
+  <rect width="100%" height="100%" fill="white"/>
+  <rect width="100%" height="100%" fill="url(#animal-pattern)"/>
 </svg>

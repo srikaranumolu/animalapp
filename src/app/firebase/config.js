@@ -2,6 +2,7 @@
 import { initializeApp, getApps } from "firebase/app";
 import { getAuth, GoogleAuthProvider, connectAuthEmulator } from "firebase/auth";
 import { getStorage } from "firebase/storage";
+import { getFirestore } from "firebase/firestore";
 
 // Detect if we're running in a development environment via Live Server
 const isLiveServer = typeof window !== 'undefined' && 
@@ -73,6 +74,7 @@ if (!getApps().length) {
 let auth = null;
 let googleProvider = null;
 let storage = null;
+let db = null;
 
 try {
   // Initialize Firebase Authentication
@@ -80,6 +82,9 @@ try {
   
   // Initialize Firebase Storage
   storage = getStorage(firebaseApp);
+  
+  // Initialize Firestore
+  db = getFirestore(firebaseApp);
   
   // Handle development environment (VS Code Live Server)
   if (isLiveServer && process.env.NODE_ENV === 'development') {
@@ -114,5 +119,5 @@ try {
 }
 
 // Export the initialized services
-export { auth, googleProvider, storage, isLiveServer };
+export { auth, googleProvider, storage, db, isLiveServer };
 export default firebaseApp; 

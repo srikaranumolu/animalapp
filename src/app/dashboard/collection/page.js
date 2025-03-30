@@ -35,7 +35,7 @@ export default function MyCollection() {
       category: 'Mammals',
       rarity: 'Common',
       discovered: '2023-12-15',
-      image: '/animals/lion.svg',
+      image: '/animals/lion.jpg',
       description: 'The lion is one of the big cats in the genus Panthera and a member of the family Felidae. The commonly used term African lion collectively denotes the several subspecies in Africa.',
       habitat: 'Savanna, grassland, dense scrub',
       diet: 'Carnivore',
@@ -49,7 +49,7 @@ export default function MyCollection() {
       category: 'Birds',
       rarity: 'Uncommon',
       discovered: '2023-11-05',
-      image: '/animals/penguin.svg',
+      image: '/animals/penguin.jpg',
       description: 'The emperor penguin is the tallest and heaviest of all living penguin species and is endemic to Antarctica.',
       habitat: 'Antarctic sea ice',
       diet: 'Carnivore (fish, squid, krill)',
@@ -63,7 +63,7 @@ export default function MyCollection() {
       category: 'Mammals',
       rarity: 'Uncommon',
       discovered: '2023-10-20',
-      image: '/animals/elephant.svg',
+      image: '/animals/elephant.jpg',
       description: 'The African elephant is the largest living terrestrial animal with bull elephants reaching a shoulder height of up to 4 m.',
       habitat: 'Savanna, forest, desert, marshes',
       diet: 'Herbivore',
@@ -77,7 +77,7 @@ export default function MyCollection() {
       category: 'Mammals',
       rarity: 'Common',
       discovered: '2024-01-10',
-      image: '/animals/giraffe.svg',
+      image: '/animals/giraffe.jpg',
       description: 'The giraffe is a tall African hoofed mammal belonging to the genus Giraffa. It is the tallest living terrestrial animal and the largest ruminant on Earth.',
       habitat: 'Savanna, woodland',
       diet: 'Herbivore',
@@ -91,7 +91,7 @@ export default function MyCollection() {
       category: 'Amphibians',
       rarity: 'Rare',
       discovered: '2024-02-01',
-      image: '/animals/frog.svg',
+      image: '/animals/frog.jpg',
       description: 'Poison dart frogs are a group of frogs native to tropical Central and South America. These frogs are well known for their bright colors and patterns combined with toxic skin secretions.',
       habitat: 'Tropical rainforests',
       diet: 'Carnivore (insects)',
@@ -105,7 +105,7 @@ export default function MyCollection() {
       category: 'Mammals',
       rarity: 'Rare',
       discovered: '2024-01-25',
-      image: '/animals/tiger.svg',
+      image: '/animals/tiger.jpg',
       description: 'The Bengal tiger is a tiger subspecies native to the Indian subcontinent. It is threatened by poaching, loss, and fragmentation of habitat.',
       habitat: 'Tropical and subtropical moist broadleaf forests',
       diet: 'Carnivore',
@@ -119,7 +119,7 @@ export default function MyCollection() {
       category: 'Mammals',
       rarity: 'Common',
       discovered: '2023-09-12',
-      image: '/animals/zebra.svg',
+      image: '/animals/zebra.jpg',
       description: 'Zebras are African equines with distinctive black-and-white striped coats.',
       habitat: 'Grasslands, savannas',
       diet: 'Herbivore',
@@ -134,9 +134,81 @@ export default function MyCollection() {
       return;
     }
     
+    // Get collected animals from localStorage
+    const storedAnimals = localStorage.getItem('collectedAnimals');
+    let quizCollectedAnimals = [];
+    
+    if (storedAnimals) {
+      try {
+        quizCollectedAnimals = JSON.parse(storedAnimals);
+        console.log('Found collected animals:', quizCollectedAnimals);
+      } catch (error) {
+        console.error('Error parsing collected animals:', error);
+      }
+    }
+    
+    // Convert quiz animals to the collection format
+    const quizAnimals = quizCollectedAnimals.map(animal => {
+      // Find the corresponding sample animal
+      const matchingSample = sampleAnimals.find(sample => 
+        sample.name.toLowerCase().includes(animal.name.toLowerCase()) || 
+        animal.name.toLowerCase().includes(sample.name.toLowerCase())
+      );
+      
+      if (matchingSample) {
+        return {
+          ...matchingSample,
+          collectedOn: animal.collectedOn,
+          source: 'Quiz'
+        };
+      }
+      
+      // If no match, create a basic entry
+      return {
+        id: animal.id || Math.random().toString(36).substring(2),
+        name: animal.name,
+        scientificName: 'Collected from quiz',
+        category: 'Mammals',
+        rarity: 'Uncommon',
+        discovered: animal.collectedOn || new Date().toISOString(),
+        image: animal.image,
+        description: 'This animal was collected by completing a quiz with a perfect score!',
+        habitat: 'Various',
+        diet: 'Various',
+        lifespan: 'Unknown',
+        funFact: 'You collected this animal by acing a quiz!',
+        source: 'Quiz'
+      };
+    });
+    
+    // Combine sample animals with quiz collected animals, avoiding duplicates
+    const combinedAnimals = [...sampleAnimals];
+    
+    quizAnimals.forEach(quizAnimal => {
+      const exists = combinedAnimals.some(animal => 
+        animal.name.toLowerCase() === quizAnimal.name.toLowerCase()
+      );
+      
+      if (!exists) {
+        combinedAnimals.push(quizAnimal);
+      } else {
+        // Update existing animal to mark it as collected from quiz
+        const index = combinedAnimals.findIndex(animal => 
+          animal.name.toLowerCase() === quizAnimal.name.toLowerCase()
+        );
+        if (index !== -1) {
+          combinedAnimals[index] = {
+            ...combinedAnimals[index],
+            source: 'Quiz',
+            collectedOn: quizAnimal.collectedOn
+          };
+        }
+      }
+    });
+    
     // Simulate loading animal data
     setTimeout(() => {
-      setAnimals(sampleAnimals);
+      setAnimals(combinedAnimals);
       setLoading(false);
     }, 1000);
   }, [user, router]);

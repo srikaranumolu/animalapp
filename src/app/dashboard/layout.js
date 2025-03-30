@@ -9,12 +9,12 @@ import DashboardNavigation from './navigation';
 export default function DashboardLayout({ children }) {
   const { user } = useAuth();
   const [userName, setUserName] = useState('Explorer');
-  const [userAvatar, setUserAvatar] = useState('/animal-avatar.svg');
+  const [userAvatar, setUserAvatar] = useState('/animals/panda.jpg');
   
   useEffect(() => {
     if (user) {
       setUserName(user.displayName || 'Explorer');
-      setUserAvatar(user.photoURL || '/animal-avatar.svg');
+      setUserAvatar(user.photoURL || '/animals/panda.jpg');
     }
   }, [user]);
   

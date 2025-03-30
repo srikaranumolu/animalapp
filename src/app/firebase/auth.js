@@ -1,4 +1,4 @@
-import { auth, googleProvider, isLiveServer } from './config';
+import { auth, googleProvider, isLiveServer, db } from './config';
 import { 
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -8,8 +8,10 @@ import {
   getRedirectResult,
   onAuthStateChanged,
   sendPasswordResetEmail,
-  updateProfile
+  updateProfile,
+  fetchSignInMethodsForEmail
 } from 'firebase/auth';
+import { collection, query, where, getDocs, limit, addDoc } from 'firebase/firestore';
 
 // Format error messages to be more user-friendly
 const formatErrorMessage = (errorCode) => {
@@ -17,7 +19,7 @@ const formatErrorMessage = (errorCode) => {
     'auth/email-already-in-use': 'This email is already registered. Try logging in instead.',
     'auth/invalid-email': 'Please enter a valid email address.',
     'auth/weak-password': 'Password should be at least 6 characters long.',
-    'auth/user-not-found': 'No account found with this email. Please check or sign up.',
+    'auth/user-not-found': 'No account found with this email or username. Please check or sign up.',
     'auth/wrong-password': 'Incorrect password. Please try again or reset your password.',
     'auth/too-many-requests': 'Too many failed attempts. Please try again later.',
     'auth/popup-closed-by-user': 'Sign in was cancelled. Please try again.',
@@ -43,12 +45,32 @@ const formatErrorMessage = (errorCode) => {
 // Email/Password Authentication
 export const registerWithEmailAndPassword = async (email, password, username) => {
   try {
+    // First check if username already exists
+    if (username) {
+      const usersRef = collection(db, 'users');
+      const q = query(usersRef, where('username', '==', username), limit(1));
+      const querySnapshot = await getDocs(q);
+      
+      if (!querySnapshot.empty) {
+        return { user: null, error: 'This username is already taken. Please choose another.' };
+      }
+    }
+    
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     
     // Update the user profile with the username as displayName
     if (username) {
       await updateProfile(userCredential.user, {
         displayName: username
+      });
+      
+      // Store username in Firestore
+      const usersRef = collection(db, 'users');
+      await addDoc(usersRef, {
+        uid: userCredential.user.uid,
+        username: username,
+        email: email,
+        createdAt: new Date()
       });
     }
     
@@ -69,18 +91,33 @@ export const loginWithEmailAndPassword = async (emailOrUsername, password) => {
       const userCredential = await signInWithEmailAndPassword(auth, emailOrUsername, password);
       return { user: userCredential.user, error: null };
     } else {
-      // It's a username, need to find the user in Firebase
-      // Since Firebase doesn't support username login directly, we'll use a workaround
-      // In a real app, you would query a database to find the email associated with the username
-      // For this demo, we'll just use the username + "@animalexplorer.com" as email
-      // This is a simplified demo approach - in a real app you'd need a proper database query
-      const email = `${emailOrUsername}@animalexplorer.com`;
+      // It's a username, need to find the user email in Firestore
       try {
+        // Get the user document from Firestore using the username
+        const usersRef = collection(db, 'users');
+        const q = query(usersRef, where('username', '==', emailOrUsername), limit(1));
+        const querySnapshot = await getDocs(q);
+        
+        if (querySnapshot.empty) {
+          // No user found with this username
+          return { user: null, error: "No account found with this username. Please check or sign up." };
+        }
+        
+        // Get the email from the user document
+        const userDoc = querySnapshot.docs[0];
+        const email = userDoc.data().email;
+        
+        // Now sign in with the email
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         return { user: userCredential.user, error: null };
       } catch (usernameLoginError) {
-        console.error("Username login error:", usernameLoginError.code);
-        return { user: null, error: "Invalid username or password. Please try again." };
+        console.error("Username login error:", usernameLoginError.code, usernameLoginError.message);
+        return { 
+          user: null, 
+          error: usernameLoginError.code === 'auth/wrong-password' 
+            ? "Incorrect password. Please try again." 
+            : "Invalid username or password. Please try again."
+        };
       }
     }
   } catch (error) {
