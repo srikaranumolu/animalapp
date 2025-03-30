@@ -10,14 +10,24 @@ export default function RandomFactsPage() {
   const { user } = useAuth();
   const router = useRouter();
   const [facts, setFacts] = useState([]);
+  const [allFacts, setAllFacts] = useState([]); // Store all facts for proper filtering
   const [randomFact, setRandomFact] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
   const [activeCategory, setActiveCategory] = useState('All');
   const [error, setError] = useState(null);
+  const [showError, setShowError] = useState(false); // Flag to control error visibility
 
   useEffect(() => {
     fetchAnimalFacts();
+    
+    // Add class to body for styling
+    document.body.classList.add('random-facts-page');
+    
+    // Cleanup function
+    return () => {
+      document.body.classList.remove('random-facts-page');
+    };
   }, []);
 
   const fetchAnimalFacts = async () => {
@@ -54,12 +64,13 @@ export default function RandomFactsPage() {
       });
       
       setFacts(processedFacts);
+      setAllFacts(processedFacts); // Store complete set for filtering
       generateRandomFact(processedFacts);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching animal facts:', error);
-      setError('Failed to load animal facts. Using backup data instead.');
-      // Use backup data in case the API fails
+      // setError('Failed to load animal facts. Using backup data instead.');
+      // Hide error message as requested
       useBackupData();
     }
   };
@@ -154,6 +165,7 @@ export default function RandomFactsPage() {
     ];
     
     setFacts(backupFacts);
+    setAllFacts(backupFacts); // Store complete set for filtering
     generateRandomFact(backupFacts);
     setLoading(false);
   };
@@ -218,18 +230,19 @@ export default function RandomFactsPage() {
   const filterByCategory = (category) => {
     setActiveCategory(category);
     if (category === 'All') {
-      setFacts(facts);
+      setFacts(allFacts); // Use the stored complete set of facts
     } else {
-      const filtered = facts.filter(fact => fact.category === category);
+      const filtered = allFacts.filter(fact => fact.category === category);
       setFacts(filtered);
     }
   };
 
-  const categories = ['All', ...new Set(facts.map(fact => fact.category))];
+  const categories = ['All', ...new Set(allFacts.map(fact => fact.category))];
 
   if (loading) {
     return (
       <div className={styles.loadingContainer}>
+        <div className={styles.pageWrapper}></div>
         <div className={styles.loader}>
           <div className={styles.pawprint}></div>
           <div className={styles.pawprint}></div>
@@ -242,6 +255,8 @@ export default function RandomFactsPage() {
 
   return (
     <div className={styles.randomFactsContainer}>
+      <div className={styles.pageWrapper}></div>
+      
       <div className={styles.backButton}>
         {user ? (
           <Link href="/dashboard">Back to Dashboard</Link>
@@ -252,7 +267,7 @@ export default function RandomFactsPage() {
       
       <h1 className={styles.pageTitle}>Random Animal Facts</h1>
       
-      {error && <div className={styles.errorNotice}>{error}</div>}
+      {showError && error && <div className={styles.errorNotice}>{error}</div>}
       
       <div className={styles.randomFactGenerator}>
         <div className={`${styles.factCard} ${isGenerating ? styles.generating : ''}`}>
@@ -260,7 +275,7 @@ export default function RandomFactsPage() {
             <>
               <div className={styles.factHeader}>
                 <span className={styles.factEmoji}>{randomFact.emoji}</span>
-                <h2>{randomFact.animal}</h2>
+                <h2 style={{ color: "#4caf50" }}>{randomFact.animal}</h2>
                 <span className={styles.factCategory}>{randomFact.category}</span>
               </div>
               <p className={styles.factText}>{randomFact.fact}</p>
@@ -269,7 +284,7 @@ export default function RandomFactsPage() {
         </div>
         <button 
           className={styles.generateButton} 
-          onClick={() => generateRandomFact()}
+          onClick={() => generateRandomFact(facts)}
           disabled={isGenerating}
         >
           {isGenerating ? 'Generating...' : 'Generate New Fact'}
@@ -293,7 +308,7 @@ export default function RandomFactsPage() {
           <div key={fact.id} className={styles.factItem}>
             <div className={styles.factItemHeader}>
               <span className={styles.factItemEmoji}>{fact.emoji}</span>
-              <h3>{fact.animal}</h3>
+              <h3 style={{color: "#4caf50"}}>{fact.animal}</h3>
             </div>
             <p>{fact.fact}</p>
             <span className={styles.factItemCategory}>{fact.category}</span>

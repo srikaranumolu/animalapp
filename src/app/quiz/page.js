@@ -28,6 +28,16 @@ const animalQuizzes = [
         question: 'What is a group of lions called?',
         options: ['Pack', 'Herd', 'Pride', 'Colony'],
         correctAnswer: 'Pride'
+      },
+      {
+        question: 'What percentage of a lion\'s hunting is done by females?',
+        options: ['50%', '70%', '90%', '30%'],
+        correctAnswer: '90%'
+      },
+      {
+        question: 'How many hours can lions spend sleeping each day?',
+        options: ['5-8 hours', '10-12 hours', '16-20 hours', '22-24 hours'],
+        correctAnswer: '16-20 hours'
       }
     ]
   },
@@ -50,6 +60,16 @@ const animalQuizzes = [
         question: 'How long is an elephant pregnancy?',
         options: ['9 months', '12 months', '18-22 months', '2-3 years'],
         correctAnswer: '18-22 months'
+      },
+      {
+        question: 'How many muscles does an elephant trunk contain?',
+        options: ['Around 10,000', 'Around 40,000', 'Around 100,000', 'Around 150,000'],
+        correctAnswer: 'Around 40,000'
+      },
+      {
+        question: 'What is unique about elephant skin?',
+        options: ['It never gets sunburned', 'It is bullet-proof', 'It can hold up to 10 gallons of water', 'It is covered in tiny wrinkles to help stay cool'],
+        correctAnswer: 'It is covered in tiny wrinkles to help stay cool'
       }
     ]
   },
@@ -72,6 +92,16 @@ const animalQuizzes = [
         question: 'What adaptation helps penguins swim so efficiently?',
         options: ['Webbed feet', 'Streamlined body shape', 'Wing-like flippers', 'All of the above'],
         correctAnswer: 'All of the above'
+      },
+      {
+        question: 'How deep can Emperor penguins dive?',
+        options: ['Up to 100 feet', 'Up to 500 feet', 'Up to 1,000 feet', 'Up to 1,800 feet'],
+        correctAnswer: 'Up to 1,800 feet'
+      },
+      {
+        question: 'What color is penguin urine?',
+        options: ['Yellow', 'Clear', 'Red', 'They don\'t produce urine'],
+        correctAnswer: 'They don\'t produce urine'
       }
     ]
   },
@@ -94,6 +124,16 @@ const animalQuizzes = [
         question: "What color is a giraffe's tongue?",
         options: ['Pink', 'Red', 'Blue-black', 'Yellow'],
         correctAnswer: 'Blue-black'
+      },
+      {
+        question: "How many vertebrae are in a giraffe's neck?",
+        options: ['4', '7', '12', '15'],
+        correctAnswer: '7'
+      },
+      {
+        question: "How do giraffes sleep?",
+        options: ['Standing up', 'Lying down for 8 hours', 'Short naps totaling less than 2 hours daily', 'Hanging from trees'],
+        correctAnswer: 'Short naps totaling less than 2 hours daily'
       }
     ]
   },
@@ -116,6 +156,16 @@ const animalQuizzes = [
         question: 'How do most frogs catch their prey?',
         options: ['With their sticky tongues', 'By chasing them', 'By using their front legs', 'By setting traps'],
         correctAnswer: 'With their sticky tongues'
+      },
+      {
+        question: 'What unusual feature do some glass frogs have?',
+        options: ['They can change color like chameleons', 'They have transparent skin showing internal organs', 'They can breathe underwater permanently', 'They have no eyes'],
+        correctAnswer: 'They have transparent skin showing internal organs'
+      },
+      {
+        question: 'Which of the following is true about frog eyes?',
+        options: ['They can only see in black and white', 'They can see in the dark better than cats', 'They help push food down when swallowing', 'They cannot blink'],
+        correctAnswer: 'They help push food down when swallowing'
       }
     ]
   }
@@ -146,6 +196,14 @@ export default function QuizPage() {
     
     setQuizzes(animalQuizzes);
     setLoading(false);
+    
+    // Add the quiz-page class to the body for styling
+    document.body.classList.add('quiz-page');
+    
+    // Cleanup function to remove the class when component unmounts
+    return () => {
+      document.body.classList.remove('quiz-page');
+    };
   }, []);
 
   useEffect(() => {

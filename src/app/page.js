@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './page.module.css';
@@ -47,19 +47,31 @@ const animals = [
 
 export default function HomePage() {
   const router = useRouter();
-  const [showWelcome, setShowWelcome] = useState(true);
+  const [showWelcome, setShowWelcome] = useState(false);
   const [animateBackground, setAnimateBackground] = useState(false);
   const [activeAnimal, setActiveAnimal] = useState(0);
+  const welcomeTimerRef = useRef(null);
 
   useEffect(() => {
-    // Hide welcome screen after 3 seconds
-    let welcomeTimer;
+    // Check if this is the first visit (using localStorage instead of sessionStorage)
+    const hasSeenWelcome = localStorage.getItem('hasSeenWelcome');
     
-    if (showWelcome) {
-      welcomeTimer = setTimeout(() => {
+    if (!hasSeenWelcome) {
+      // First visit, show welcome screen
+      setShowWelcome(true);
+      
+      // Set flag in localStorage
+      localStorage.setItem('hasSeenWelcome', 'true');
+      
+      // Hide welcome screen after 3 seconds
+      welcomeTimerRef.current = setTimeout(() => {
         setShowWelcome(false);
         setAnimateBackground(true);
       }, 3000);
+    } else {
+      // Not first visit, skip welcome screen and just animate background
+      setShowWelcome(false); // Explicitly set to false to prevent any flash
+      setAnimateBackground(true);
     }
 
     // Rotate featured animal every 5 seconds
@@ -68,7 +80,7 @@ export default function HomePage() {
     }, 5000);
 
     return () => {
-      if (welcomeTimer) clearTimeout(welcomeTimer);
+      if (welcomeTimerRef.current) clearTimeout(welcomeTimerRef.current);
       clearInterval(animalTimer);
     };
   }, []);
@@ -109,7 +121,7 @@ export default function HomePage() {
           <nav className={styles.homeNav}>
             <Link href="/random-facts" className={styles.navLink}>Animal Facts</Link>
             <Link href="/login" className={styles.navLink}>Login</Link>
-            <Link href="/signup" className={styles.authButton}>Sign Up </Link>
+            <Link href="/signup" className={styles.authButton}>Sign Up</Link>
           </nav>
         </header>
 
@@ -216,7 +228,7 @@ export default function HomePage() {
         {/* Footer */}
         <footer className={styles.homeFooter}>
           <div className={styles.footerContent}>
-            <p>© 2023 Animal Explorer. All rights reserved.</p>
+            <p>© 2025 Animal Explorer. All rights reserved.</p>
             <div className={styles.footerLinks}>
               <Link href="/random-facts">Animal Facts</Link>
               <Link href="/login">Login</Link>

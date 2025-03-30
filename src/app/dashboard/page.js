@@ -70,7 +70,7 @@ export default function Dashboard() {
           <p>Continue your animal adventure today</p>
           <div className={styles.animalTip}>
             <span className={styles.tipIcon}>💡</span>
-            <span>{animalTip}</span>
+            <span style={{color: "#4caf50"}}>{animalTip}</span>
           </div>
         </div>
         <div className={styles.headerDecoration}>

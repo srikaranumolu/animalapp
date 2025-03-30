@@ -1,45 +1,120 @@
 <svg width="250" height="400" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <pattern id="jungle-pattern" patternUnits="userSpaceOnUse" width="250" height="400">
+      <!-- Background shapes -->
+      <rect width="250" height="400" fill="#f9fff8" />
+      
+      <!-- Background gradient overlay -->
+      <rect width="250" height="400" fill="url(#bg-gradient)" />
+      
       <!-- Palm/Fern leaves -->
-      <path d="M20,50 C30,30 50,20 60,40 C70,20 90,10 100,30" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
-      <path d="M150,80 C160,60 180,50 190,70 C200,50 220,40 230,60" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
-      <path d="M70,150 C80,130 100,120 110,140 C120,120 140,110 150,130" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
-      <path d="M180,220 C190,200 210,190 220,210 C230,190 250,180 260,200" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
+      <path d="M20,50 C30,30 50,20 60,40 C70,20 90,10 100,30" fill="none" stroke="rgba(76, 175, 80, 0.2)" stroke-width="3" stroke-linecap="round" />
+      <path d="M150,80 C160,60 180,50 190,70 C200,50 220,40 230,60" fill="none" stroke="rgba(76, 175, 80, 0.2)" stroke-width="3" stroke-linecap="round" />
+      <path d="M70,150 C80,130 100,120 110,140 C120,120 140,110 150,130" fill="none" stroke="rgba(76, 175, 80, 0.2)" stroke-width="3" stroke-linecap="round" />
+      <path d="M180,220 C190,200 210,190 220,210 C230,190 250,180 260,200" fill="none" stroke="rgba(76, 175, 80, 0.2)" stroke-width="3" stroke-linecap="round" />
+      
+      <!-- Leafy designs -->
+      <path d="M40,70 Q50,60 60,70 Q70,60 80,70 Q60,85 40,70" fill="rgba(129, 199, 132, 0.2)" stroke="rgba(76, 175, 80, 0.1)" stroke-width="1" />
+      <path d="M140,170 Q150,160 160,170 Q170,160 180,170 Q160,185 140,170" fill="rgba(129, 199, 132, 0.2)" stroke="rgba(76, 175, 80, 0.1)" stroke-width="1" />
+      <path d="M90,270 Q100,260 110,270 Q120,260 130,270 Q110,285 90,270" fill="rgba(129, 199, 132, 0.2)" stroke="rgba(76, 175, 80, 0.1)" stroke-width="1" />
       
       <!-- Paw prints -->
-      <g opacity="0.08">
-        <circle cx="40" cy="100" r="5" fill="#fff"/>
-        <circle cx="50" cy="110" r="5" fill="#fff"/>
-        <circle cx="60" cy="100" r="5" fill="#fff"/>
-        <ellipse cx="50" cy="90" rx="8" ry="6" fill="#fff"/>
+      <g opacity="0.2">
+        <circle cx="40" cy="100" r="5" fill="#4caf50"/>
+        <circle cx="50" cy="110" r="5" fill="#4caf50"/>
+        <circle cx="60" cy="100" r="5" fill="#4caf50"/>
+        <ellipse cx="50" cy="90" rx="8" ry="6" fill="#4caf50"/>
       </g>
       
-      <g opacity="0.08">
-        <circle cx="140" cy="250" r="5" fill="#fff"/>
-        <circle cx="150" cy="260" r="5" fill="#fff"/>
-        <circle cx="160" cy="250" r="5" fill="#fff"/>
-        <ellipse cx="150" cy="240" rx="8" ry="6" fill="#fff"/>
+      <g opacity="0.2">
+        <circle cx="140" cy="250" r="5" fill="#4caf50"/>
+        <circle cx="150" cy="260" r="5" fill="#4caf50"/>
+        <circle cx="160" cy="250" r="5" fill="#4caf50"/>
+        <ellipse cx="150" cy="240" rx="8" ry="6" fill="#4caf50"/>
       </g>
       
-      <g opacity="0.08">
-        <circle cx="200" cy="350" r="5" fill="#fff"/>
-        <circle cx="210" cy="360" r="5" fill="#fff"/>
-        <circle cx="220" cy="350" r="5" fill="#fff"/>
-        <ellipse cx="210" cy="340" rx="8" ry="6" fill="#fff"/>
+      <g opacity="0.2">
+        <circle cx="200" cy="350" r="5" fill="#4caf50"/>
+        <circle cx="210" cy="360" r="5" fill="#4caf50"/>
+        <circle cx="220" cy="350" r="5" fill="#4caf50"/>
+        <ellipse cx="210" cy="340" rx="8" ry="6" fill="#4caf50"/>
       </g>
+      
+      <!-- Butterfly silhouettes -->
+      <path d="M80,120 C90,110 100,115 80,130 C100,145 90,150 80,140 C70,150 60,145 80,130 C60,115 70,110 80,120" fill="rgba(156, 204, 101, 0.2)" />
+      <path d="M170,220 C180,210 190,215 170,230 C190,245 180,250 170,240 C160,250 150,245 170,230 C150,215 160,210 170,220" fill="rgba(156, 204, 101, 0.2)" />
       
       <!-- Vines -->
-      <path d="M0,200 Q125,150 250,200" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="3"/>
-      <path d="M0,300 Q125,250 250,300" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="3"/>
+      <path d="M0,200 Q125,150 250,200" fill="none" stroke="rgba(76, 175, 80, 0.25)" stroke-width="3" stroke-dasharray="10,5" />
+      <path d="M0,300 Q125,250 250,300" fill="none" stroke="rgba(76, 175, 80, 0.25)" stroke-width="3" stroke-dasharray="10,5" />
       
-      <!-- Small circles representing flowers or berries -->
-      <circle cx="30" cy="180" r="3" fill="rgba(255,255,255,0.1)"/>
-      <circle cx="50" cy="190" r="2" fill="rgba(255,255,255,0.1)"/>
-      <circle cx="180" cy="280" r="3" fill="rgba(255,255,255,0.1)"/>
-      <circle cx="200" cy="290" r="2" fill="rgba(255,255,255,0.1)"/>
-      <circle cx="100" cy="350" r="3" fill="rgba(255,255,255,0.1)"/>
-      <circle cx="120" cy="360" r="2" fill="rgba(255,255,255,0.1)"/>
+      <!-- Flower decorations -->
+      <g transform="translate(30,180)">
+        <circle cx="0" cy="0" r="5" fill="#ffb74d" opacity="0.5" />
+        <circle cx="-4" cy="-4" r="3" fill="#ffd54f" opacity="0.5" />
+        <circle cx="4" cy="-4" r="3" fill="#ffd54f" opacity="0.5" />
+        <circle cx="4" cy="4" r="3" fill="#ffd54f" opacity="0.5" />
+        <circle cx="-4" cy="4" r="3" fill="#ffd54f" opacity="0.5" />
+      </g>
+      
+      <g transform="translate(180,280)">
+        <circle cx="0" cy="0" r="5" fill="#ffb74d" opacity="0.5" />
+        <circle cx="-4" cy="-4" r="3" fill="#ffd54f" opacity="0.5" />
+        <circle cx="4" cy="-4" r="3" fill="#ffd54f" opacity="0.5" />
+        <circle cx="4" cy="4" r="3" fill="#ffd54f" opacity="0.5" />
+        <circle cx="-4" cy="4" r="3" fill="#ffd54f" opacity="0.5" />
+      </g>
+      
+      <g transform="translate(100,350)">
+        <circle cx="0" cy="0" r="5" fill="#ffb74d" opacity="0.5" />
+        <circle cx="-4" cy="-4" r="3" fill="#ffd54f" opacity="0.5" />
+        <circle cx="4" cy="-4" r="3" fill="#ffd54f" opacity="0.5" />
+        <circle cx="4" cy="4" r="3" fill="#ffd54f" opacity="0.5" />
+        <circle cx="-4" cy="4" r="3" fill="#ffd54f" opacity="0.5" />
+      </g>
+      
+      <!-- Additional small flowers -->
+      <circle cx="50" cy="190" r="3" fill="#81c784" opacity="0.6" />
+      <circle cx="200" cy="290" r="3" fill="#81c784" opacity="0.6" />
+      <circle cx="120" cy="360" r="3" fill="#81c784" opacity="0.6" />
+      <circle cx="70" cy="40" r="3" fill="#81c784" opacity="0.6" />
+      <circle cx="220" cy="120" r="3" fill="#81c784" opacity="0.6" />
+      
+      <!-- Animal silhouettes -->
+      <path d="M100,50 C105,45 110,45 115,50 C120,45 125,45 130,50 C132,55 132,60 130,65 C125,70 120,70 115,65 C110,70 105,70 100,65 C98,60 98,55 100,50" fill="rgba(76, 175, 80, 0.15)" />
+      
+      <path d="M70,210 C73,207 78,207 80,210 C82,207 87,207 90,210 C91,213 91,216 90,219 C87,222 82,222 80,219 C78,222 73,222 70,219 C69,216 69,213 70,210" fill="rgba(76, 175, 80, 0.15)" />
+      
+      <path d="M170,330 C175,325 180,325 185,330 C190,325 195,325 200,330 C202,335 202,340 200,345 C195,350 190,350 185,345 C180,350 175,350 170,345 C168,340 168,335 170,330" fill="rgba(76, 175, 80, 0.15)" />
+      
+      <!-- Decorative dots pattern -->
+      <g opacity="0.3">
+        <circle cx="35" cy="35" r="1.5" fill="#4caf50" />
+        <circle cx="40" cy="40" r="1.5" fill="#4caf50" />
+        <circle cx="45" cy="35" r="1.5" fill="#4caf50" />
+        <circle cx="40" cy="30" r="1.5" fill="#4caf50" />
+      </g>
+      
+      <g opacity="0.3">
+        <circle cx="135" cy="135" r="1.5" fill="#4caf50" />
+        <circle cx="140" cy="140" r="1.5" fill="#4caf50" />
+        <circle cx="145" cy="135" r="1.5" fill="#4caf50" />
+        <circle cx="140" cy="130" r="1.5" fill="#4caf50" />
+      </g>
+      
+      <g opacity="0.3">
+        <circle cx="235" cy="235" r="1.5" fill="#4caf50" />
+        <circle cx="240" cy="240" r="1.5" fill="#4caf50" />
+        <circle cx="245" cy="235" r="1.5" fill="#4caf50" />
+        <circle cx="240" cy="230" r="1.5" fill="#4caf50" />
+      </g>
+
+    <!-- Define gradients -->
+    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="rgba(200, 230, 201, 0.05)" />
+      <stop offset="50%" stop-color="rgba(165, 214, 167, 0.05)" />
+      <stop offset="100%" stop-color="rgba(200, 230, 201, 0.05)" />
+    </linearGradient>
     </pattern>
   </defs>
   
